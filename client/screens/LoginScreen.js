@@ -12,7 +12,7 @@ export default function LoginScreen({ navigation }) {
       await signInWithEmailAndPassword(auth, email, password);
       navigation.navigate('Home');
     } catch (e) {
-      alert("Login failed");
+      alert("Login failed: " + e.message);
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function QRScanScreen() {
@@ -13,17 +13,19 @@ export default function QRScanScreen() {
     })();
   }, []);
 
-  const handleBarCodeScanned = ({ data }) => {
-    setScanned(true);
-    fetch(`https://yourapi.com/api/transactions/confirm/${data}`, { method: 'POST' })
-      .then(() => alert("Transaction Confirmed ✅"))
-      .catch(() => alert("Something went wrong"));
-  };
-
-  if (hasPermission === null) return <Text>Requesting camera permission...</Text>;
-  if (hasPermission === false) return <Text>No camera access</Text>;
+  if (hasPermission === null) return <Text>Requesting for camera permission</Text>;
+  if (hasPermission === false) return <Text>No access to camera</Text>;
 
   return (
-    <BarCodeScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} style={{ flex: 1 }} />
+    <View style={{ flex: 1 }}>
+      <BarCodeScanner
+        onBarCodeScanned={({ data }) => {
+          setScanned(true);
+          alert(`QR scanned: ${data}`);
+        }}
+        style={{ flex: 1 }}
+      />
+      {scanned && <Button title={'Scan again'} onPress={() => setScanned(false)} />}
+    </View>
   );
 }
