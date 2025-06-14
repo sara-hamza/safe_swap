@@ -1,0 +1,9 @@
+# Node modules
+node_modules/
+
+# Flutter build
+**/build/
+*.iml
+
+# Environment files
+.env
